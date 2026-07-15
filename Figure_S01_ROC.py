@@ -1,10 +1,11 @@
-from annotated_fasta_CAID import aff_load_caid_scores
-from annotated_fasta import aff_load3, aff_save3, aff_save_fasta
-from annotated_fasta_metrics import aff_roc, aff_violin_plot
 from param import *
 import sys
 if aff_path not in sys.path:
     sys.path.append(aff_path)
+
+from annotated_fasta_CAID import aff_load_caid_scores
+from annotated_fasta import aff_load3, aff_save3, aff_save_fasta
+from annotated_fasta_metrics import aff_roc, aff_violin_plot
 
 
 if __name__ == '__main__':

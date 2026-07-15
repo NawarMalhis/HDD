@@ -1,10 +1,11 @@
-from annotated_fasta import *
 from param import *
-from annotated_fasta_metrics import *
-from annotated_fasta_CAID import *
 import sys
 if aff_path not in sys.path:
     sys.path.append(aff_path)
+    
+from annotated_fasta import *
+from annotated_fasta_metrics import *
+from annotated_fasta_CAID import *
 
 
 def load_data():

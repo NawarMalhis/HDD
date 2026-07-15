@@ -1,8 +1,9 @@
-from annotated_fasta import *
 from param import *
 import sys
 if aff_path not in sys.path:
     sys.path.append(aff_path)
+
+from annotated_fasta import *
 
 
 if __name__ == '__main__':

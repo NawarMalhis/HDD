@@ -1,11 +1,12 @@
+from param import *
+import sys
+if aff_path not in sys.path:
+    sys.path.append(aff_path)
+
 from annotated_fasta_CAID import aff_load_caid_scores
 from annotated_fasta import aff_load3, aff_remove_short
 import numpy as np
 import matplotlib.pyplot as plt
-from param import aff_path
-import sys
-if aff_path not in sys.path:
-    sys.path.append(aff_path)
 
 
 def violin_h_plot(data, labels, positions=None, showmeans=True, title=None,
