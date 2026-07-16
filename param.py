@@ -1,5 +1,5 @@
 
-aff_path = '/home/nmalhis/Papers/tmp/AFF/'
+aff_path = '/home/nmalhis/tmp/AFF/'
 data_path = "Data/"
 
 fl_dict = {'CAID1u': 'binding_protein', 'CAID1uh': 'binding_protein', 'CAID23u': 'binding_protein',

@@ -67,7 +67,7 @@ def get_tags_list_scores(af, tags, score_tag):
 
 
 if __name__ == '__main__':
-    print(matplotlib.__version__)
+    # print(matplotlib.__version__)
     _p = './Data/'
     score_tag = 'LIST-S2'  # 'IUPred3', 'LIST-S2'
     labels_list = ['PDB', 'IDR']
@@ -78,14 +78,14 @@ if __name__ == '__main__':
     aff_remove_short(af, cut=15)  # remove short sequences with len(seq) < 15 AA
     aff_load_caid_scores(af, f"{_p}scores/", prd_list=[score_tag], merged=False,
                          remove_missing_scores=True)
-    print(len(af['data']))
+    # print(len(af['data']))
     pdb_idr_data = get_tags_list_scores(af=af, tags=[['IDR-CAID', '0'], ['IDR-CAID', '1']], score_tag=score_tag)
     data = [pdb_idr_data[0], pdb_idr_data[1]]
     for ds in d_set_dict:
         tag = d_set_dict[ds]
         af_dict[ds] = aff_load3(f"{_p}af/{ds}.af")
         aff_remove_short(af=af_dict[ds], cut=15)  # remove short sequences with len(seq) < 15 AA
-        print(ds, tag, score_tag, len(af_dict[ds]['data']), list(af_dict[ds]['data'].keys()), flush=True)
+        # print(ds, tag, score_tag, len(af_dict[ds]['data']), list(af_dict[ds]['data'].keys()), flush=True)
         aff_load_caid_scores(af=af_dict[ds], scores_path=f"{_p}scores/", prd_list=[score_tag], merged=False,
                              remove_missing_scores=True)
         binding_data_dict[ds] = get_tags_list_scores(af_dict[ds], tags=[[tag, '0'], [tag, '1']], score_tag=score_tag)
