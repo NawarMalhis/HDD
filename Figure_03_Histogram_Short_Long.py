@@ -4,8 +4,6 @@ if aff_path not in sys.path:
     sys.path.append(aff_path)
 
 from annotated_fasta import aff_load3, aff_tag_size, aff_gen_counts
-from annotated_fasta_metrics import aff_roc, aff_violin_plot
-import numpy as np
 
 
 if __name__ == '__main__':
