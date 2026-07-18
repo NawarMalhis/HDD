@@ -2,8 +2,9 @@
 """
 Generate ROC curves for protein binding site prediction tools across multiple datasets.
 Supports DBs, CAID1u, and CAID23u benchmarks.
-By: Nawar Malhis
-The University of British Columbia
+
+Author: Nawar Malhis
+The University of British Columbia, 2026
 """
 
 from pathlib import Path
