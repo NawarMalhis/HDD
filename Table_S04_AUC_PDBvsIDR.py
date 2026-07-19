@@ -67,7 +67,7 @@ if __name__ == '__main__':
     fill_class_0()
     fill_class_1()
 
-    with open("Data/results/Tables/Table_S04_AUC_PDB_IDR.tsv", 'w') as fout:
+    with open("Data/results/Tables/Table_S04_AUC__PDB_IDR.tsv", 'w') as fout:
         for tg0 in roc_data_dict:
             for df in files_dict:
                 for prd in roc_data_dict[tg0][df]:
