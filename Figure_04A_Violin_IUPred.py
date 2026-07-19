@@ -11,7 +11,7 @@ from pathlib import Path
 import sys
 import matplotlib.pyplot as plt
 
-# Add project path
+# Add AFF project path
 from param import *
 if aff_path not in globals() or aff_path not in sys.path:  # type: ignore[name-defined]
     sys.path.append(str(aff_path))  # type: ignore[name-defined]
@@ -109,7 +109,6 @@ def violin_h_plot(
 if __name__ == "__main__":
     base_path = Path("Data")
     score_tag = "IUPred3"          # change to 'LIST-S2' if needed
-    # output_dir = base_path / "results" / "Figure_4"
 
     # Main DisProt + extra file for PDB/IDR baseline
     af = aff_load3(str(base_path / "af" / "DisProt_2025_06_DBs_extra.af"))

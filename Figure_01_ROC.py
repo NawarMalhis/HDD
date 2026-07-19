@@ -7,11 +7,10 @@ Author: Nawar Malhis
 The University of British Columbia, 2026
 """
 
-from pathlib import Path
 from param import *
 import sys
 
-# Add AFF path
+# Add AFF project path
 if aff_path not in globals() or aff_path not in sys.path:  # type: ignore[name-defined]
     sys.path.append(str(aff_path))  # type: ignore[name-defined]
 
@@ -20,8 +19,7 @@ from annotated_fasta import aff_load3
 from annotated_fasta_metrics import aff_roc
 
 # ====================== CONFIGURATION ======================
-BASE_DATA_DIR = Path("Data")
-RESULTS_DIR = BASE_DATA_DIR / "results"
+RESULTS_DIR = "Data/results"
 
 # Common tools (baseline predictors)
 BASE_TOOLS = [
@@ -60,7 +58,7 @@ def main() -> None:
         tag = "PDB" if "DBs" in in_data else "binding_protein"
 
         # Load annotated fasta
-        af_path = BASE_DATA_DIR / "af" / f"{in_data}.af"
+        af_path = f"Data/af/{in_data}.af"
         af = aff_load3(str(af_path))
         print(f"Loaded {len(af['data'])} sequences for {in_data}")
 
@@ -73,7 +71,7 @@ def main() -> None:
         tools_list = get_tools_list(in_data)
         aff_load_caid_scores(
             af,
-            scores_path=f"{BASE_DATA_DIR}/scores/"  ,
+            scores_path=f"Data/scores/"  ,
             prd_list=tools_list,
             merged=False,
             remove_missing_scores=False,
@@ -81,12 +79,11 @@ def main() -> None:
 
         # Output paths and title
         if in_data == "CAID1u":
-            fig_dir = RESULTS_DIR / "Figure_S1"
+            fig_dir = "Data/results/Figure_S1"
         else:
-            fig_dir = RESULTS_DIR / "Figure_1"
+            fig_dir = "Data/results/Figure_1"
 
-        fig_dir.mkdir(parents=True, exist_ok=True)
-        figure_file = fig_dir / f"ROC_{in_data}.png"
+        figure_file = f"{fig_dir}ROC_{in_data}.png"
 
         title = in_data
 
