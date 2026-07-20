@@ -4,6 +4,7 @@ https://doi.org/10.64898/2026.06.24.733783
 
 # How to Generate Everything
 Run these commands in the terminal (they assume your data is in Data/):
+```bash
 python Figure_01_ROC.py
 python Figure_02_Violin_Training.py
 python Figure_03_Histogram_Training.py
@@ -23,4 +24,5 @@ python Table_S03.py
 python Table_S04_AUC_PDBvsIDR.py
 python Table_S05_AUC_Merge_DBs_CAID23.py
 python Table_S06_AUC_Merge_DBs_CAID1.py
+```
 All outputs go to Data/results/Figure_* and Data/results/Tables/.
