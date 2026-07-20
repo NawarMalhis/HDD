@@ -2,7 +2,7 @@
 Prepare all figures and tables for the manuscript “The Hidden Disorder Divide: Reconciling Benchmark Inconsistencies in Intrinsically Disordered Protein Binding Site Prediction”.
 https://doi.org/10.64898/2026.06.24.733783
 
-# How to Generate Everything
+## How to Generate Everything
 Run these commands in the terminal (they assume your data is in Data/):
 ```bash
 python3 Figure_01_ROC.py
