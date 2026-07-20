@@ -10,7 +10,6 @@ Author: Nawar Malhis
 The University of British Columbia, 2026
 """
 
-from pathlib import Path
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
@@ -42,19 +41,18 @@ def load_test_site_fractions() -> tuple[dict, list]:
 
     fractions = {"Short": [], "Long": []}
     datasets = ["CAID1uh", "CAID23uh", "DBsh"]
-    base_path = Path("Data")
 
     for in_data in datasets:
         cfg = data_config[in_data]
         tag = cfg["tag"]
 
         # Load once for total
-        af = aff_load3(str(base_path / "af" / f"{in_data}.af"))
+        af = aff_load3(f"Data/af/{in_data}.af")
         aff_gen_counts(af)
         total = af["metadata"]["counts"]["tags_dict"][tag]["1"]
 
         for category, sz_range in cfg["size_ranges"].items():
-            af = aff_load3(str(base_path / "af" / f"{in_data}.af"))  # fresh load
+            af = aff_load3(f"Data/af/{in_data}.af")  # fresh load
             aff_tag_size(af, tag, sz_range=sz_range)
             aff_gen_counts(af)
             cnt = af["metadata"]["counts"]["tags_dict"][tag]["1"]
@@ -131,9 +129,7 @@ if __name__ == "__main__":
     plt.tight_layout()
 
     # Save
-    out_dir = Path("Data/results/Figure_3")
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "Figure_3_right_test.png"
+    out_path = "Data/results/Figure_3Figure_3_right_test.png"
     plt.savefig(out_path, dpi=400, bbox_inches="tight")
     print(f"Figure saved: {out_path}")
 

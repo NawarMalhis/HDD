@@ -8,7 +8,6 @@ The University of British Columbia, 2026
 """
 
 import matplotlib.pyplot as plt
-from pathlib import Path
 from param import *
 import sys
 
@@ -17,7 +16,7 @@ if aff_path not in globals() or aff_path not in sys.path:  # type: ignore[name-d
     sys.path.append(str(aff_path))  # type: ignore[name-defined]
 
 
-def load_training_auc(in_file: str | Path) -> dict:
+def load_training_auc(in_file: str) -> dict:
     """
     Parse training AUC TSV file into nested dictionary.
     Expected format: header lines with model names, then rank + AUC columns.
@@ -112,8 +111,7 @@ def violin_plot(
 
 
 if __name__ == "__main__":
-    BASE_DIR = Path("Data")
-    tsv_path = BASE_DIR / "Training_AUC" / "training_auc.tsv"
+    tsv_path = "Data/Training_AUC/training_auc.tsv"
 
     dta = load_training_auc(tsv_path)
 
@@ -157,9 +155,7 @@ if __name__ == "__main__":
             ax=ax,
         )
 
-    output_dir = BASE_DIR / "results" / "Figure_2"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    out_file = output_dir / "train_violin_Run_M.png"
+    out_file = "Data/results/Figure_2/train_violin_Run_M.png"
 
     plt.savefig(out_file, dpi=300, bbox_inches="tight")
     plt.show()

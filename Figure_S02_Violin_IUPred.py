@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 """
 Supplementary Figure S2 — IUPred3 disorder scores (Class 0 vs Class 1)
-across training and test datasets.
 
 Author: Nawar Malhis
 The University of British Columbia, 2026
 """
 
-from pathlib import Path
+# from pathlib import Path
 import sys
-import matplotlib.pyplot as plt
-
 from param import *
 # Add AFF project path
 if aff_path not in sys.path:
@@ -18,23 +15,19 @@ if aff_path not in sys.path:
 
 from annotated_fasta_CAID import aff_load_caid_scores
 from annotated_fasta import aff_load3, aff_remove_short
+import matplotlib.pyplot as plt
 
 
-def get_tags_list_scores(af: dict, tags: list, score_tag: str) -> list:
-    """Extract scores for given tag/class pairs."""
+def get_tags_list_scores(af, tags, score_tag):
+    """Extract scores for specific tag/class combinations."""
     d_lst = []
-    for tag_name, class_val in tags:
+    for jj in range(len(tags)):
         sc = []
-        for entry in af["data"].values():
-            tags_dict = entry.get("tags", {})
-            scores = entry.get("scores", {})
-            if tag_name not in tags_dict or score_tag not in scores:
-                continue
-            tag_array = tags_dict[tag_name]
-            score_array = scores[score_tag]
-            for i, val in enumerate(tag_array):
-                if val == class_val:
-                    sc.append(score_array[i])
+        for ac in af['data']:
+            for ii in range(len(af['data'][ac]['seq'])):
+                tag_name = tags[jj][0]
+                if af['data'][ac]['tags'][tag_name][ii] == tags[jj][1]:
+                    sc.append(af['data'][ac]['scores'][score_tag][ii])
         d_lst.append(sc)
     return d_lst
 
@@ -54,7 +47,7 @@ def violin_h_plot(
 
     # Write means to table
     if f_name:
-        tbl_name = f"{base_path}/results/Tables/Table_4-u.tsv"
+        tbl_name = f"Data/results/Tables/Table_4_IUPred.tsv"
         with open(tbl_name, "w", encoding="utf-8") as fout:
             for i, lbl in enumerate(labels):
                 mean_val = sum(data[i]) / len(data[i]) if data[i] else 0.0
@@ -66,6 +59,7 @@ def violin_h_plot(
     fig.subplots_adjust(left=0.26, right=0.96, top=0.96, bottom=0.08)
 
     positions = list(range(1, len(data) + 1))
+    ax.set_ylim(bottom=0.5, top=10.8)
     parts = ax.violinplot(
         data,
         positions=positions,
@@ -98,30 +92,27 @@ def violin_h_plot(
         ax.set_title(title, fontsize=fontsize + 1, pad=20)
 
     if f_name:
-        Path(f_name).parent.mkdir(parents=True, exist_ok=True)
         plt.savefig(f_name, dpi=350, bbox_inches="tight")
 
     plt.show()
 
 
 if __name__ == "__main__":
-    base_path = Path("Data")
     score_tag = "IUPred3"   # change to 'LIST-S2' if needed
 
-    # Baseline (DisProt extra)
-    af = aff_load3(f"{base_path}/af/DisProt_2025_06_DBs_extra.af")
+    af = aff_load3(f"Data/af/DisProt_2025_06_DBs_extra.af")
     aff_remove_short(af, cut=15)
     aff_load_caid_scores(
-        af, scores_path=f"{base_path}/scores/", prd_list=[score_tag],
+        af, scores_path=f"Data/scores/", prd_list=[score_tag],
         merged=False, remove_missing_scores=True
     )
 
-    labels_list = ["PDB (Class 0)", "IDR (Class 1)"]
+    # Base reference data [PDB, IDR]
+    labels_list = ["PDB", "IDR"]
     data = get_tags_list_scores(
         af, tags=[["IDR-CAID", "0"], ["IDR-CAID", "1"]], score_tag=score_tag
     )
 
-    # Additional datasets
     d_set_dict = {
         "TR2008u": "PDB",
         "DBs": "PDB",
@@ -130,10 +121,10 @@ if __name__ == "__main__":
     }
 
     for ds, tag in d_set_dict.items():
-        af_ds = aff_load3(f"{base_path}/af/{ds}.af")
+        af_ds = aff_load3(f"Data/af/{ds}.af")
         aff_remove_short(af_ds, cut=15)
         aff_load_caid_scores(
-            af_ds, scores_path=f"{base_path}/scores/", prd_list=[score_tag],
+            af_ds, scores_path=f"Data/scores/", prd_list=[score_tag],
             merged=False, remove_missing_scores=True
         )
 
@@ -145,13 +136,13 @@ if __name__ == "__main__":
         data.extend(ds_data)
 
     # Generate plot
-    vf_name = f"{base_path}/results/Figure_S2/IUPred3.png"
+    vf_name = f"Data/results/Figure_S2/IUPred3.png"
     violin_h_plot(
         data=data,
         labels=labels_list,
         display_means={"0": "#d62728", "1": "#2ca02c"},  # red / green
-        xlabel=score_tag,
-        title="Supplementary Figure S2 — IUPred3 Scores",
+        xlabel="IUPred3 Disorder Scores",
+        # title="IUPred3 Disorder Scores",
         f_name=vf_name,
         fontsize=24,
     )

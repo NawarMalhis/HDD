@@ -7,7 +7,6 @@ Author: Nawar Malhis
 The University of British Columbia, 2026
 """
 
-from pathlib import Path
 import sys
 import matplotlib.pyplot as plt
 
@@ -55,9 +54,7 @@ def violin_h_plot(
 
     # Write mean values to table
     if t_name:
-        out_path = Path(t_name)
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(out_path, "w", encoding="utf-8") as fout:
+        with open(t_name, "w", encoding="utf-8") as fout:
             for i, lbl in enumerate(labels):
                 mean_val = sum(data[i]) / len(data[i]) if data[i] else 0.0
                 fout.write(f"{lbl}\t{mean_val:.3f}\n")
@@ -68,6 +65,7 @@ def violin_h_plot(
     fig.subplots_adjust(left=0.26, right=0.96, top=0.96, bottom=0.08)
 
     positions = list(range(1, len(data) + 1))
+    ax.set_ylim(bottom=0.5, top=8.8)
     parts = ax.violinplot(
         data,
         positions=positions,
@@ -100,25 +98,23 @@ def violin_h_plot(
         ax.set_title(title, fontsize=fontsize + 2, pad=20)
 
     if f_name:
-        Path(f_name).parent.mkdir(parents=True, exist_ok=True)
         plt.savefig(f_name, dpi=350, bbox_inches="tight")
 
     plt.show()
 
 
 if __name__ == "__main__":
-    base_path = Path("Data")
     score_tag = "IUPred3"          # change to 'LIST-S2' if needed
 
     # Main DisProt + extra file for PDB/IDR baseline
-    af = aff_load3(str(base_path / "af" / "DisProt_2025_06_DBs_extra.af"))
+    af = aff_load3("Data/af/DisProt_2025_06_DBs_extra.af")
     aff_remove_short(af, cut=15)
     aff_load_caid_scores(
-        af, f"{base_path}/scores/", prd_list=[score_tag],
+        af, "Data/scores/", prd_list=[score_tag],
         merged=False, remove_missing_scores=True
     )
 
-    labels_list = ["PDB (Class 0)", "IDR (Class 1)"]
+    labels_list = ["PDB", "IDR"]
     data = get_tags_list_scores(
         af, tags=[["IDR-CAID", "0"], ["IDR-CAID", "1"]], score_tag=score_tag
     )
@@ -131,10 +127,10 @@ if __name__ == "__main__":
     }
 
     for ds, tag in d_set_dict.items():
-        af_ds = aff_load3(str(base_path / "af" / f"{ds}.af"))
+        af_ds = aff_load3(f"Data/af/{ds}.af")
         aff_remove_short(af_ds, cut=15)
         aff_load_caid_scores(
-            af_ds, f"{base_path}/scores/", prd_list=[score_tag],
+            af_ds, f"Data/scores/", prd_list=[score_tag],
             merged=False, remove_missing_scores=True
         )
 
@@ -151,9 +147,8 @@ if __name__ == "__main__":
         data=data,
         labels=labels_list,
         display_means={"0": "#d62728", "1": "#2ca02c"},   # red / green
-        xlabel=score_tag,
-        title="IUPred3 Disorder Scores by Dataset & Class",
-        f_name=str(base_path / "results" / "Figure_4" / "Figure_4A_left_IUPred.png"),
-        t_name=str(base_path / "results" / "Tables" / "Table_4_Left.tsv"),
+        xlabel="IUPred3 Disorder Scores",
+        f_name="Data/results/Figure_4/Figure_4A_left_IUPred.png",
+        t_name="Data/results/Tables/Table_4_Left.tsv",
         fontsize=24,
     )

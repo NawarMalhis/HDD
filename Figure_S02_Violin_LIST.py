@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
 Supplementary Figure S2 — LIST-S2 conservation scores (Class 0 vs Class 1)
-across training and test datasets.
 
 Author: Nawar Malhis
 The University of British Columbia, 2026
 """
 
-from param import *
 import sys
+from param import *
 # Add AFF project path
 if aff_path not in sys.path:
     sys.path.append(aff_path)
@@ -16,48 +15,6 @@ if aff_path not in sys.path:
 from annotated_fasta_CAID import aff_load_caid_scores
 from annotated_fasta import aff_load3, aff_remove_short
 import matplotlib.pyplot as plt
-
-
-def violin_h_plot(data, labels, display_means=None, title=None,
-                  xlabel='', f_name=None, fontsize=24):
-    """Horizontal violin plot with mean lines and table output."""
-    plt.rcParams.update({'font.size': 14})
-
-    fig, ax = plt.subplots(nrows=1, ncols=1)
-    fig.set_size_inches(8, 14)
-    fig.subplots_adjust(left=0.23, right=0.95, top=0.95, bottom=0.08)
-
-    parts = ax.violinplot(data, points=200, showmeans=True,
-                          side='high', vert=False)
-
-    if display_means is None:
-        display_means = {}
-
-    # Color bodies
-    for i, pc in enumerate(parts['bodies']):
-        color = display_means.get(str(i), 'lightblue')
-        pc.set_facecolor(color)
-
-    # Mean dashed lines
-    for cc in display_means:
-        ii = int(cc)
-        if ii < len(data) and data[ii]:
-            fmn = sum(data[ii]) / len(data[ii])
-            ax.plot([fmn, fmn], [0.2, len(data) + 0.8],
-                    color=display_means[cc], linestyle='dashed', linewidth=2)
-
-    ax.yaxis.grid(True)
-    ax.set_yticks([y + 1 for y in range(len(labels))])
-    ax.set_yticklabels(labels, fontsize=fontsize - 3)
-    ax.set_xlabel(xlabel, fontsize=fontsize)
-
-    if title:
-        ax.set_title(title, fontsize=fontsize + 1)
-
-    if f_name:
-        plt.savefig(f_name, dpi=350, bbox_inches='tight')
-
-    plt.show()
 
 
 def get_tags_list_scores(af, tags, score_tag):
@@ -74,6 +31,71 @@ def get_tags_list_scores(af, tags, score_tag):
     return d_lst
 
 
+def violin_h_plot(
+    data: list,
+    labels: list,
+    display_means: dict | None = None,
+    title: str | None = None,
+    xlabel: str = "",
+    f_name: str | None = None,
+    fontsize: int = 24,
+):
+    """Horizontal violin plot with mean lines."""
+    if display_means is None:
+        display_means = {}
+
+    # Write means to table
+    if f_name:
+        tbl_name = f"Data/results/Tables/Table_None_LIST.tsv"
+        with open(tbl_name, "w", encoding="utf-8") as fout:
+            for i, lbl in enumerate(labels):
+                mean_val = sum(data[i]) / len(data[i]) if data[i] else 0.0
+                fout.write(f"{lbl}\t{mean_val:.3f}\n")
+                print(f"{lbl}\t{mean_val:.3f}")
+
+    plt.rcParams.update({"font.size": 14})
+    fig, ax = plt.subplots(figsize=(8.5, 14))
+    fig.subplots_adjust(left=0.26, right=0.96, top=0.96, bottom=0.08)
+
+    positions = list(range(1, len(data) + 1))
+    ax.set_ylim(bottom=0.5, top=10.8)
+    parts = ax.violinplot(
+        data,
+        positions=positions,
+        points=200,
+        showmeans=True,
+        vert=False,
+        side="high",
+    )
+
+    # Color violins
+    for i, pc in enumerate(parts["bodies"]):
+        color = display_means.get(str(i), "lightblue")
+        pc.set_facecolor(color)
+        pc.set_edgecolor("black")
+        pc.set_alpha(0.85)
+
+    # Mean dashed lines
+    for i_str, color in display_means.items():
+        i = int(i_str)
+        if i < len(data) and data[i]:
+            mean_val = sum(data[i]) / len(data[i])
+            ax.plot([mean_val, mean_val], [0.2, len(data) + 0.8],
+                    color=color, linestyle="--", linewidth=2)
+
+    ax.yaxis.grid(True, linestyle="--", alpha=0.7)
+    ax.set_yticks(positions)
+    ax.set_yticklabels(labels, fontsize=fontsize - 3)
+    ax.set_xlabel(xlabel, fontsize=fontsize)
+    if title:
+        ax.set_title(title, fontsize=fontsize + 1, pad=20)
+
+    if f_name:
+        plt.savefig(f_name, dpi=350, bbox_inches="tight")
+
+    plt.show()
+
+
 if __name__ == '__main__':
     _p = './Data/'
     score_tag = 'LIST-S2'
@@ -86,18 +108,17 @@ if __name__ == '__main__':
         'CAID1u': 'binding_protein'
     }
 
-    # Baseline
     af = aff_load3(in_file=f"{_p}af/DisProt_2025_06_DBs_extra.af")
     aff_remove_short(af, cut=15)
     aff_load_caid_scores(af, f"{_p}scores/", prd_list=[score_tag],
                          merged=False, remove_missing_scores=True)
 
-    pdb_idr_data = get_tags_list_scores(
+    # Base reference data [PDB, IDR]
+    data = get_tags_list_scores(
         af, tags=[['IDR-CAID', '0'], ['IDR-CAID', '1']], score_tag=score_tag
     )
-    data = [pdb_idr_data[0], pdb_idr_data[1]]
 
-    # Other datasets
+    # Datasets
     for ds in d_set_dict:
         tag = d_set_dict[ds]
         af_ds = aff_load3(in_file=f"{_p}af/{ds}.af")
@@ -119,8 +140,8 @@ if __name__ == '__main__':
         data=data,
         labels=labels_list,
         display_means={'0': 'red', '1': 'green'},
-        xlabel=f"{score_tag} Conservation",
-        title="LIST-S2 Conservation Scores",
+        xlabel="LIST-S2 Conservation Scores",
+        # title="LIST-S2 Conservation Scores",
         f_name=vf_name,
         fontsize=24
     )

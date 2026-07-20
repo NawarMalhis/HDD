@@ -9,7 +9,6 @@ The University of British Columbia, 2026
 
 from param import *
 import sys
-
 # Add AFF project path
 if aff_path not in globals() or aff_path not in sys.path:  # type: ignore[name-defined]
     sys.path.append(str(aff_path))  # type: ignore[name-defined]
