@@ -4,7 +4,7 @@ Generate ROC curves for protein binding site prediction tools across multiple da
 Supports DBs, CAID1u, and CAID23u benchmarks.
 
 Author: Nawar Malhis
-Refined: Grok
+Refined using Grok
 The University of British Columbia, 2026
 """
 

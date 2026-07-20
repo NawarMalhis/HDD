@@ -4,7 +4,7 @@ Supplementary Table S3 — Training AUC ranks for CNN models
 across DBsh, CAID1uh, and CAID23uh.
 
 Author: Nawar Malhis
-Refined: Grok
+Refined using Grok
 The University of British Columbia, 2026
 """
 

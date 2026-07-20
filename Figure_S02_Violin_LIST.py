@@ -3,7 +3,7 @@
 Supplementary Figure S2 — LIST-S2 conservation scores (Class 0 vs Class 1)
 
 Author: Nawar Malhis
-Refined: Grok
+Refined using Grok
 The University of British Columbia, 2026
 """
 

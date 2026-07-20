@@ -4,7 +4,7 @@ Figure 4B (right) — Horizontal violin plot of IUPred3 scores
 for short vs long binding sites (Class 1) across test datasets.
 
 Author: Nawar Malhis
-Refined: Grok
+Refined using Grok
 The University of British Columbia, 2026
 """
 

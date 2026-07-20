@@ -4,7 +4,7 @@ Figure 4A (left) — Horizontal violin plot of IUPred3 disorder scores
 Compares Class 0 (non-binding) and Class 1 (binding) residues across datasets.
 
 Author: Nawar Malhis
-Refined: Grok
+Refined using Grok
 The University of British Columbia, 2026
 """
 
