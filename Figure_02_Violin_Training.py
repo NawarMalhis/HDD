@@ -4,6 +4,7 @@ Generate violin plots comparing training AUC distributions for CNN models
 across DBsh, CAID1uh, and CAID23uh datasets.
 
 Author: Nawar Malhis
+Refined: Grok
 The University of British Columbia, 2026
 """
 

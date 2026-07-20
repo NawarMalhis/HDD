@@ -4,15 +4,14 @@ Generate Table 1 — AUC values for IDR-protein binding site predictors
 across CAID1u, CAID23u (CAID2&3u), and DBs datasets.
 
 Author: Nawar Malhis
+Refined: Grok
 The University of British Columbia, 2026
 """
 
-from pathlib import Path
 from param import *
 import sys
 import numpy as np  # for nan check
 
-# Add AFF project path
 if aff_path not in sys.path:
     sys.path.append(aff_path)
 
@@ -23,8 +22,6 @@ from annotated_fasta_metrics import aff_roc
 
 def main():
     # Configuration
-    base_path = Path("Data")
-
     prd_list = [
         "AlphaFold-binding", "ANCHOR-2", "DeepDISObind-protein",
         "DeepDRPBind-protein", "DisoRDPbind-protein", "DRPBind-protein",
@@ -56,7 +53,7 @@ def main():
         af = aff_load3(in_file=f"{data_path}af/{fl}.af")
         aff_load_caid_scores(
             af,
-            scores_path=f"{base_path}/scores/",
+            scores_path=f"Data/scores/",
             prd_list=prd_dict[subset],
             merged=False,
             remove_missing_scores=False,
@@ -67,7 +64,7 @@ def main():
         )
 
     # Write TSV table
-    out_file = f"{base_path}/results/Tables/Table_1_AUC.tsv"
+    out_file = f"Data/results/Tables/Table_1_AUC.tsv"
 
     with open(out_file, "w", encoding="utf-8") as fout:
         header = (

@@ -4,6 +4,7 @@ Supplementary Table S3 — Training AUC ranks for CNN models
 across DBsh, CAID1uh, and CAID23uh.
 
 Author: Nawar Malhis
+Refined: Grok
 The University of British Columbia, 2026
 """
 
@@ -14,11 +15,11 @@ if aff_path not in sys.path:
 
 
 def load_training(in_file):
-    """Parse training AUC TSV file."""
+    """Parse the training AUC TSV file into a nested dictionary."""
     dta = {
-        'DBsh': {'CNN_C1u': [], 'CNN_C23u': [], 'CNN_DBs': [], 'CNN_TR08u': []},
+        'DBsh':    {'CNN_C1u': [], 'CNN_C23u': [], 'CNN_DBs': [], 'CNN_TR08u': []},
         'CAID1uh': {'CNN_C1u': [], 'CNN_C23u': [], 'CNN_DBs': [], 'CNN_TR08u': []},
-        'CAID23uh': {'CNN_C1u': [], 'CNN_C23u': [], 'CNN_DBs': [], 'CNN_TR08u': []}
+        'CAID23uh':{'CNN_C1u': [], 'CNN_C23u': [], 'CNN_DBs': [], 'CNN_TR08u': []}
     }
 
     labels_list = ['Rank', 'CAID1uh', 'CAID23uh', 'DBsh']
@@ -32,15 +33,19 @@ def load_training(in_file):
 
             lst = line.split()
 
-            if line[0] == '#':
-                mdl = lst[1]
+            # Model header line, e.g. "# CNN_C1u"
+            if line.startswith('#'):
+                if len(lst) > 1:
+                    mdl = lst[1]
                 continue
 
+            # Skip header row
             if lst[0] == 'Rank':
                 continue
 
+            # Extract AUC values for each dataset
             for ii, lbl in enumerate(labels_list):
-                if ii == 0:
+                if ii == 0:                    # skip Rank column
                     continue
                 if ii >= len(lst) or lst[ii] == 'NAN':
                     continue
@@ -53,30 +58,29 @@ def load_training(in_file):
 
 
 if __name__ == '__main__':
-    _p = 'Data/'
-    dta = load_training(f"{_p}Training_AUC/training_auc.tsv")
+    input_file = 'Data/Training_AUC/training_auc.tsv'
+    out_file   = 'Data/results/Tables/Table_S3.tsv'
+
+    dta = load_training(input_file)
 
     models_list = ['CNN_C1u', 'CNN_C23u', 'CNN_DBs', 'CNN_TR08u']
-
-    out_file = 'Data/results/Tables/Table_S3.tsv'
 
     with open(out_file, 'w') as fout:
         for mdl in models_list:
             print(f"Model: {mdl}", file=fout)
 
-            # Datasets with sufficient data for this model
+            # Only include datasets that have enough values for this model
             active_datasets = [dd for dd in dta if len(dta[dd][mdl]) > 2]
+            print('\t'.join(active_datasets), file=fout)
 
-            print(active_datasets, file=fout)
-
-            # Print ranks (starting from rank 20)
+            # Print ranks 20–40
             for jj in range(21):
                 rank = jj + 20
                 print(rank, end='\t', file=fout)
                 for dd in active_datasets:
-                    print(dta[dd][mdl][jj], end='\t', file=fout)
+                    print(f"{dta[dd][mdl][jj]:.3f}", end='\t', file=fout)
                 print(file=fout)
 
-            print(file=fout)   # separator between models
+            print(file=fout)   # blank line between models
 
     print(f"Table saved to: {out_file}")

@@ -6,6 +6,7 @@ Table 2 — Average ΔAUC (CAID23uh - DBsh) under different class-merging strate
 - c1: merge Class 1 (binding) from both datasets
 
 Author: Nawar Malhis
+Refined: Grok
 The University of British Columbia, 2026
 """
 
@@ -13,7 +14,6 @@ import sys
 from sklearn.metrics import roc_auc_score
 from param import *
 
-# Add AFF project path
 if aff_path not in sys.path:
     sys.path.append(aff_path)
 
@@ -94,7 +94,6 @@ def compute_auc_merged(files_dict: dict, merged_class: str) -> dict:
 
 if __name__ == "__main__":
     # Configuration
-    # data_path = Path("Data")
     files = ["CAID23uh", "DBsh"]
 
     files_dict_config = {

@@ -7,6 +7,7 @@ Categories:
 - Long (>70 AA)
 
 Author: Nawar Malhis
+Refined: Grok
 The University of British Columbia, 2026
 """
 
@@ -129,7 +130,7 @@ if __name__ == "__main__":
     plt.tight_layout()
 
     # Save
-    out_path = "Data/results/Figure_3Figure_3_right_test.png"
+    out_path = "Data/results/Figure_3/Figure_3_right_test.png"
     plt.savefig(out_path, dpi=400, bbox_inches="tight")
     print(f"Figure saved: {out_path}")
 
