@@ -17,8 +17,14 @@ conda env create -f hdd.yml
 ```
 
 ## How to Generate Everything
-Run these commands in the terminal (they assume your data is in Data/):
+
+
 ```bash
+# First activate the hdd environment:
+conda activate hdd
+
+# Then run these commands in the terminal; they assume your data is in Data/ and
+#   all outputs go to Data/results/Figure_* and Data/results/Tables/:
 python3 Figure_01_ROC.py
 python3 Figure_02_Violin_Training.py
 python3 Figure_03_Histogram_Training.py
@@ -38,5 +44,5 @@ python3 Table_S03.py
 python3 Table_S04_AUC_PDBvsIDR.py
 python3 Table_S05_AUC_Merge_DBs_CAID23.py
 python3 Table_S06_AUC_Merge_DBs_CAID1.py
+python3 Table_S07_AUC_Merge_CAID1_CAID23.py
 ```
-All outputs go to Data/results/Figure_* and Data/results/Tables/.
