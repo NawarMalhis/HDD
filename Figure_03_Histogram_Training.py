@@ -12,6 +12,8 @@ Refined using Grok
 The University of British Columbia, 2026
 """
 
+import os
+os.environ["QT_LOGGING_RULES"] = "qt.qpa.wayland.textinput=false"
 import sys
 import numpy as np
 import matplotlib.pyplot as plt

@@ -11,14 +11,16 @@ Refined using Grok
 The University of British Columbia, 2026
 """
 
+import os
+os.environ["QT_LOGGING_RULES"] = "qt.qpa.wayland.textinput=false"
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Add project path
 from param import *
-if aff_path not in globals() or aff_path not in sys.path:  # type: ignore[name-defined]
-    sys.path.append(str(aff_path))  # type: ignore[name-defined]
+if aff_path not in globals() or aff_path not in sys.path:
+    sys.path.append(str(aff_path))
 
 from annotated_fasta import aff_load3, aff_tag_size, aff_gen_counts
 

@@ -8,6 +8,8 @@ Refined using Grok
 The University of British Columbia, 2026
 """
 
+import os
+os.environ["QT_LOGGING_RULES"] = "qt.qpa.wayland.textinput=false"
 from param import *
 import sys
 # Add AFF project path
@@ -79,12 +81,12 @@ def main() -> None:
 
         # Output paths and title
         if in_data == "CAID1u":
-            fig_dir = "Data/results/Figure_S1"
+            fig_file = "Data/results/Figure_S1/Figure_S1_"
         else:
-            fig_dir = "Data/results/Figure_1"
+            fig_file = "Data/results/Figure_1/Figure_1_"
 
-        figure_file = f"{fig_dir}ROC_{in_data}.png"
-
+        figure_file = f"{fig_file}ROC_{in_data}.png"
+        
         title = in_data
 
         # Generate ROC plot

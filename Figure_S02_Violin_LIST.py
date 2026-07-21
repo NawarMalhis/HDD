@@ -7,6 +7,8 @@ Refined using Grok
 The University of British Columbia, 2026
 """
 
+import os
+os.environ["QT_LOGGING_RULES"] = "qt.qpa.wayland.textinput=false"
 import sys
 from param import *
 # Add AFF project path
