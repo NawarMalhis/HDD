@@ -2,6 +2,20 @@
 Prepare all figures and tables for the manuscript “The Hidden Disorder Divide: Reconciling Benchmark Inconsistencies in Intrinsically Disordered Protein Binding Site Prediction”.
 https://doi.org/10.64898/2026.06.24.733783
 
+## To install:
+```bash
+# Clone HDD
+git clone https://github.com/NawarMalhis/HDD.git
+# Clone the "annotated fasta format" library:	
+git clone https://github.com/NawarMalhis/AFF.git
+# Change directory:	
+cd HDD
+# Update the path to the AFF (annotated fasta format) folder in param.py.
+aff_path = '/xxx/xxx/AFF/'
+# Create the hdd environment:
+conda env create -f hdd.yml
+```
+
 ## How to Generate Everything
 Run these commands in the terminal (they assume your data is in Data/):
 ```bash
