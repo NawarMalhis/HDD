@@ -11,5 +11,6 @@ dependencies:
   - torchvision
   - torchaudio
   - cpuonly
+  - requests
   - pip:
     - biopython
