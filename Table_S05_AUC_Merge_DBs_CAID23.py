@@ -4,7 +4,7 @@ Supplementary Table S05 — AUC under class-merging strategies
 (CAID23uh vs DBsh) for Class 0 and Class 1 merging.
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 

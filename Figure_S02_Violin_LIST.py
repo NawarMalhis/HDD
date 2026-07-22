@@ -3,15 +3,15 @@
 Supplementary Figure S2 — LIST-S2 conservation scores (Class 0 vs Class 1)
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 
 import os
 os.environ["QT_LOGGING_RULES"] = "qt.qpa.wayland.textinput=false"
-import sys
+
 from param import *
-# Add AFF project path
+import sys
 if aff_path not in sys.path:
     sys.path.append(aff_path)
 
@@ -23,33 +23,25 @@ import matplotlib.pyplot as plt
 def get_tags_list_scores(af, tags, score_tag):
     """Extract scores for specific tag/class combinations."""
     d_lst = []
-    for jj in range(len(tags)):
+    for tag_name, class_val in tags:
         sc = []
         for ac in af['data']:
             for ii in range(len(af['data'][ac]['seq'])):
-                tag_name = tags[jj][0]
-                if af['data'][ac]['tags'][tag_name][ii] == tags[jj][1]:
+                if af['data'][ac]['tags'][tag_name][ii] == class_val:
                     sc.append(af['data'][ac]['scores'][score_tag][ii])
         d_lst.append(sc)
     return d_lst
 
 
-def violin_h_plot(
-    data: list,
-    labels: list,
-    display_means: dict | None = None,
-    title: str | None = None,
-    xlabel: str = "",
-    f_name: str | None = None,
-    fontsize: int = 24,
-):
+def violin_h_plot(data, labels, display_means=None, title=None,
+                  xlabel="", f_name=None, fontsize=24):
     """Horizontal violin plot with mean lines."""
     if display_means is None:
         display_means = {}
 
     # Write means to table
     if f_name:
-        tbl_name = f"Data/results/Tables/Table_None_LIST.tsv"
+        tbl_name = "Data/results/Tables/Table_None_LIST.tsv"
         with open(tbl_name, "w", encoding="utf-8") as fout:
             for i, lbl in enumerate(labels):
                 mean_val = sum(data[i]) / len(data[i]) if data[i] else 0.0
@@ -61,13 +53,15 @@ def violin_h_plot(
     fig.subplots_adjust(left=0.26, right=0.96, top=0.96, bottom=0.08)
 
     positions = list(range(1, len(data) + 1))
-    ax.set_ylim(bottom=0.5, top=10.8)
+    ax.set_ylim(bottom=0.5, top=len(data) + 0.8)
+
+    # Fixed: use orientation='horizontal' instead of the deprecated vert=False
     parts = ax.violinplot(
         data,
         positions=positions,
         points=200,
         showmeans=True,
-        vert=False,
+        orientation='horizontal',
         side="high",
     )
 
@@ -111,17 +105,17 @@ if __name__ == '__main__':
         'CAID1u': 'binding_protein'
     }
 
+    # Baseline reference
     af = aff_load3(in_file=f"{_p}af/DisProt_2025_06_DBs_extra.af")
     aff_remove_short(af, cut=15)
     aff_load_caid_scores(af, f"{_p}scores/", prd_list=[score_tag],
                          merged=False, remove_missing_scores=True)
 
-    # Base reference data [PDB, IDR]
     data = get_tags_list_scores(
         af, tags=[['IDR-CAID', '0'], ['IDR-CAID', '1']], score_tag=score_tag
     )
 
-    # Datasets
+    # Additional datasets
     for ds in d_set_dict:
         tag = d_set_dict[ds]
         af_ds = aff_load3(in_file=f"{_p}af/{ds}.af")
@@ -144,7 +138,6 @@ if __name__ == '__main__':
         labels=labels_list,
         display_means={'0': 'red', '1': 'green'},
         xlabel="LIST-S2 Conservation Scores",
-        # title="LIST-S2 Conservation Scores",
         f_name=vf_name,
         fontsize=24
     )

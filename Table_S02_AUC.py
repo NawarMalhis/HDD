@@ -4,7 +4,7 @@ Supplementary Table S02 — AUC values for all predictors
 across CAID1uh, CAID23uh, and DBsh.
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 

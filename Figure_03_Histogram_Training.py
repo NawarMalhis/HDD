@@ -8,7 +8,7 @@ Categories:
 - Long (>70 AA)
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 

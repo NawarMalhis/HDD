@@ -4,7 +4,7 @@ Supplementary Table S04 — AUC values when treating PDB-derived vs IDR-derived
 non-binding residues (Class 0) separately against binding sites (Class 1).
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 

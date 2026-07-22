@@ -4,7 +4,7 @@ Generate Table 1 — AUC values for IDR-protein binding site predictors
 across CAID1u, CAID23u (CAID2&3u), and DBs datasets.
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 

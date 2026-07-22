@@ -6,7 +6,7 @@ Table 2 — Average ΔAUC (CAID23uh - DBsh) under different class-merging strate
 - c1: merge Class 1 (binding) from both datasets
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 

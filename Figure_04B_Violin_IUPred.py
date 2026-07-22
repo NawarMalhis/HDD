@@ -4,15 +4,15 @@ Figure 4B (right) — Horizontal violin plot of IUPred3 scores
 for short vs long binding sites (Class 1) across test datasets.
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 
 import os
 os.environ["QT_LOGGING_RULES"] = "qt.qpa.wayland.textinput=false"
+
 from param import *
 import sys
-# Add AFF project path
 if aff_path not in sys.path:
     sys.path.append(aff_path)
 
@@ -21,7 +21,7 @@ from annotated_fasta_CAID import aff_load_caid_scores
 from annotated_fasta import aff_load3, aff_remove_short, aff_tag_size
 
 
-def get_tags_list_scores(af: dict, tags: list, score_tag: str) -> list:
+def get_tags_list_scores(af, tags, score_tag):
     """Extract scores for given tag/class combinations."""
     data = []
     for tag_name, class_val in tags:
@@ -40,16 +40,8 @@ def get_tags_list_scores(af: dict, tags: list, score_tag: str) -> list:
     return data
 
 
-def violin_h_plot(
-    data: list,
-    labels: list,
-    display_means: dict | None = None,
-    title: str | None = None,
-    xlabel: str = "",
-    f_name: str | None = None,
-    t_name: str | None = None,
-    fontsize: int = 22,
-):
+def violin_h_plot(data, labels, display_means=None, title=None,
+                  xlabel="", f_name=None, t_name=None, fontsize=22):
     """Horizontal violin plot with mean lines and table output."""
     if display_means is None:
         display_means = {}
@@ -67,13 +59,15 @@ def violin_h_plot(
     fig.subplots_adjust(left=0.26, right=0.96, top=0.96, bottom=0.08)
 
     positions = list(range(1, len(data) + 1))
-    ax.set_ylim(bottom=0.5, top=8.8)
+    ax.set_ylim(bottom=0.5, top=len(data) + 0.8)
+
+    # Fixed: use orientation='horizontal' instead of the deprecated vert=False
     parts = ax.violinplot(
         data,
         positions=positions,
         points=200,
         showmeans=True,
-        vert=False,
+        orientation='horizontal',
         side="high",
     )
 
@@ -106,15 +100,13 @@ def violin_h_plot(
 
 
 if __name__ == "__main__":
-    # base_path = Path("Data")
-    score_tag = "IUPred3"   # or 'LIST-S2'
-    # output_dir = base_path / "results" / "Figure_4"
+    score_tag = "IUPred3"
 
     # Baseline (DisProt extra)
     af = aff_load3("Data/af/DisProt_2025_06_DBs_extra.af")
     aff_remove_short(af, cut=15)
     aff_load_caid_scores(
-        af, scores_path=f"Data/scores/", prd_list=[score_tag],
+        af, scores_path="Data/scores/", prd_list=[score_tag],
         merged=False, remove_missing_scores=True
     )
 
@@ -132,16 +124,13 @@ if __name__ == "__main__":
     sl_dict = {"_short": [0, 71], "_long": [71, 10000]}
 
     for ds, tag in d_set_dict.items():
-        af_ds = aff_load3(f"Data/af/{ds}.af")
-        aff_remove_short(af_ds, cut=15)
-
         for sl_label, sz_range in sl_dict.items():
-            af_temp = aff_load3(f"Data/af/{ds}.af")  # fresh copy
+            af_temp = aff_load3(f"Data/af/{ds}.af")
             aff_remove_short(af_temp, cut=15)
             aff_tag_size(af_temp, tag=tag, sz_range=sz_range)
 
             aff_load_caid_scores(
-                af_temp, scores_path=f"Data/scores/", prd_list=[score_tag],
+                af_temp, scores_path="Data/scores/", prd_list=[score_tag],
                 merged=False, remove_missing_scores=True
             )
 
@@ -159,7 +148,7 @@ if __name__ == "__main__":
     violin_h_plot(
         data=data,
         labels=labels_list,
-        display_means={"0": "#d62728", "1": "#2ca02c"},   # red for baseline, green for binding
+        display_means={"0": "#d62728", "1": "#2ca02c"},
         xlabel="IUPred3 Disorder Scores",
         f_name="Data/results/Figure_4/Figure_4B_right_IUPred.png",
         t_name="Data/results/Tables/Table_4_Right.tsv",

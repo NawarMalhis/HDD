@@ -4,25 +4,24 @@ Figure 4A (left) — Horizontal violin plot of IUPred3 disorder scores
 Compares Class 0 (non-binding) and Class 1 (binding) residues across datasets.
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 
 import os
 os.environ["QT_LOGGING_RULES"] = "qt.qpa.wayland.textinput=false"
-import sys
-import matplotlib.pyplot as plt
 
-# Add AFF project path
 from param import *
-if aff_path not in globals() or aff_path not in sys.path:  # type: ignore[name-defined]
-    sys.path.append(str(aff_path))  # type: ignore[name-defined]
+import sys
+if aff_path not in sys.path:
+    sys.path.append(aff_path)
 
+import matplotlib.pyplot as plt
 from annotated_fasta_CAID import aff_load_caid_scores
 from annotated_fasta import aff_load3, aff_remove_short
 
 
-def get_tags_list_scores(af: dict, tags: list, score_tag: str) -> list:
+def get_tags_list_scores(af, tags, score_tag):
     """Extract scores for specific tag/class combinations."""
     d_lst = []
     for tag_name, class_val in tags:
@@ -41,16 +40,8 @@ def get_tags_list_scores(af: dict, tags: list, score_tag: str) -> list:
     return d_lst
 
 
-def violin_h_plot(
-    data: list,
-    labels: list,
-    display_means: dict | None = None,
-    title: str | None = None,
-    xlabel: str = "",
-    f_name: str | None = None,
-    t_name: str | None = None,
-    fontsize: int = 18,
-):
+def violin_h_plot(data, labels, display_means=None, title=None,
+                  xlabel="", f_name=None, t_name=None, fontsize=18):
     """Horizontal violin plot with mean lines."""
     if display_means is None:
         display_means = {}
@@ -68,13 +59,15 @@ def violin_h_plot(
     fig.subplots_adjust(left=0.26, right=0.96, top=0.96, bottom=0.08)
 
     positions = list(range(1, len(data) + 1))
-    ax.set_ylim(bottom=0.5, top=8.8)
+    ax.set_ylim(bottom=0.5, top=len(data) + 0.8)
+
+    # Fixed: replaced deprecated vert=False with orientation='horizontal'
     parts = ax.violinplot(
         data,
         positions=positions,
         points=200,
         showmeans=True,
-        vert=False,      # horizontal
+        orientation='horizontal',
         side="high",
     )
 
@@ -88,8 +81,8 @@ def violin_h_plot(
     # Mean dashed lines
     for i_str, color in display_means.items():
         i = int(i_str)
-        if i < len(data):
-            mean_val = sum(data[i]) / len(data[i]) if data[i] else 0.0
+        if i < len(data) and data[i]:
+            mean_val = sum(data[i]) / len(data[i])
             ax.plot([mean_val, mean_val], [0.2, len(data) + 0.8],
                     color=color, linestyle="--", linewidth=2)
 
@@ -107,9 +100,9 @@ def violin_h_plot(
 
 
 if __name__ == "__main__":
-    score_tag = "IUPred3"          # change to 'LIST-S2' if needed
+    score_tag = "IUPred3"
 
-    # Main DisProt + extra file for PDB/IDR baseline
+    # Baseline (DisProt + extra)
     af = aff_load3("Data/af/DisProt_2025_06_DBs_extra.af")
     aff_remove_short(af, cut=15)
     aff_load_caid_scores(
@@ -133,7 +126,7 @@ if __name__ == "__main__":
         af_ds = aff_load3(f"Data/af/{ds}.af")
         aff_remove_short(af_ds, cut=15)
         aff_load_caid_scores(
-            af_ds, f"Data/scores/", prd_list=[score_tag],
+            af_ds, "Data/scores/", prd_list=[score_tag],
             merged=False, remove_missing_scores=True
         )
 
@@ -145,11 +138,10 @@ if __name__ == "__main__":
         data.extend(ds_data)
 
     # Generate plot
-    #     t_name = f"{_p}results/Tables/Table_x4_Left.tsv"
     violin_h_plot(
         data=data,
         labels=labels_list,
-        display_means={"0": "#d62728", "1": "#2ca02c"},   # red / green
+        display_means={"0": "#d62728", "1": "#2ca02c"},
         xlabel="IUPred3 Disorder Scores",
         f_name="Data/results/Figure_4/Figure_4A_left_IUPred.png",
         t_name="Data/results/Tables/Table_4_Left.tsv",

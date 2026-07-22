@@ -4,7 +4,7 @@ Supplementary Table S01 — Dataset composition statistics
 (Total sequences, residues, binding sites, class counts, etc.)
 
 Author: Nawar Malhis
-Refined using Grok
+Refined with assistance from Grok
 The University of British Columbia, 2026
 """
 
