@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Supplementary Figure S2 — IUPred3 disorder scores (Class 0 vs Class 1)
+Figure 3 — IUPred3 disorder scores (Class 0 vs Class 1)
 
 Author: Nawar Malhis
 Refined with assistance from Grok
@@ -41,7 +41,7 @@ def violin_h_plot(data, labels, display_means=None, title=None,
 
     # Write means to table
     if f_name:
-        tbl_name = "Data/results/Tables/Table_4_IUPred.tsv"
+        tbl_name = "Data/results/Tables/Table_3_u_all.tsv"
         with open(tbl_name, "w", encoding="utf-8") as fout:
             for i, lbl in enumerate(labels):
                 mean_val = sum(data[i]) / len(data[i]) if data[i] else 0.0
@@ -49,7 +49,7 @@ def violin_h_plot(data, labels, display_means=None, title=None,
                 print(f"{lbl}\t{mean_val:.3f}")
 
     plt.rcParams.update({"font.size": 14})
-    fig, ax = plt.subplots(figsize=(8.5, 14))
+    fig, ax = plt.subplots(figsize=(8.5, 16))
     fig.subplots_adjust(left=0.26, right=0.96, top=0.96, bottom=0.08)
 
     positions = list(range(1, len(data) + 1))
@@ -132,7 +132,7 @@ if __name__ == "__main__":
         data.extend(ds_data)
 
     # Generate plot
-    vf_name = "Data/results/Figure_S2/IUPred3.png"
+    vf_name = "Data/results/Figure_3/Figure_3_left.png"
     violin_h_plot(
         data=data,
         labels=labels_list,

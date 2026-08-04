@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Figure 4A (left) — Horizontal violin plot of IUPred3 disorder scores
+Supplementary Figure S3 — Horizontal violin plot of IUPred3 disorder scores
 Compares Class 0 (non-binding) and Class 1 (binding) residues across datasets.
 
 Author: Nawar Malhis
@@ -143,7 +143,7 @@ if __name__ == "__main__":
         labels=labels_list,
         display_means={"0": "#d62728", "1": "#2ca02c"},
         xlabel="IUPred3 Disorder Scores",
-        f_name="Data/results/Figure_4/Figure_4A_left_IUPred.png",
-        t_name="Data/results/Tables/Table_4_Left.tsv",
+        f_name="Data/results/Figure_S3/Figure_S3_uh.png",
+        t_name="Data/results/Tables/Table_3_uh_all.tsv",
         fontsize=24,
     )

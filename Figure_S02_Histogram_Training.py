@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Figure 3 (left) — Binding site length distribution in training datasets
+Supplementary Figure S2 (left) — Binding site length distribution in training datasets
 
 Categories:
 - Very short (≤30 AA)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Figure 3 (right) — Binding site length distribution in test datasets
+Supplementary Figure S2 (right) — Binding site length distribution in test datasets
 
 Categories:
 - Short (≤70 AA)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Figure 4B (right) — Horizontal violin plot of IUPred3 scores
+Figure 3 (right) — Horizontal violin plot of IUPred3 scores
 for short vs long binding sites (Class 1) across test datasets.
 
 Author: Nawar Malhis
@@ -121,16 +121,18 @@ if __name__ == "__main__":
         "CAID23uh": "binding_protein",
         "CAID1uh": "binding_protein",
     }
-    sl_dict = {"_short": [0, 71], "_long": [71, 10000]}
+    sl_dict = {"_S": [0, 71], "_L": [71, 10000]}
 
     for ds, tag in d_set_dict.items():
         for sl_label, sz_range in sl_dict.items():
             af_temp = aff_load3(f"Data/af/{ds}.af")
             aff_remove_short(af_temp, cut=15)
-            aff_tag_size(af_temp, tag=tag, sz_range=sz_range)
+            # mask out "tag" sites with site_size outside the range "sz_range" in af
+            aff_tag_size(af=af_temp, tag=tag, sz_range=sz_range)
 
+            # load scores for all tools in "prd_list"
             aff_load_caid_scores(
-                af_temp, scores_path="Data/scores/", prd_list=[score_tag],
+                af=af_temp, scores_path="Data/scores/", prd_list=[score_tag],
                 merged=False, remove_missing_scores=True
             )
 
@@ -150,7 +152,7 @@ if __name__ == "__main__":
         labels=labels_list,
         display_means={"0": "#d62728", "1": "#2ca02c"},
         xlabel="IUPred3 Disorder Scores",
-        f_name="Data/results/Figure_4/Figure_4B_right_IUPred.png",
-        t_name="Data/results/Tables/Table_4_Right.tsv",
+        f_name="Data/results/Figure_3/Figure_3_right.png",
+        t_name="Data/results/Tables/Table_3_uh_SL.tsv",
         fontsize=24,
     )

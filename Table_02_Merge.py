@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Table 2 — Average ΔAUC (CAID23uh - DBsh) under different class-merging strategies:
+Table 2 — Average ΔAUC under different class-merging strategies:
 - non: no merging
 - c0: merge Class 0 (non-binding) from both datasets
 - c1: merge Class 1 (binding) from both datasets
@@ -118,10 +118,10 @@ if __name__ == "__main__":
 
     out_file = "Data/results/Tables/Table_2_merge.tsv"
     with open(out_file, "w", encoding="utf-8") as fout:
-        for fl_i in [0, 1, 2]:  # [0, 1, 2]
+        for fl_i in range(len(files)):  # [0, 1, 2]
             files2_list = files[fl_i]
             prd_used = list(set(prd_included[files2_list[0]]) & set(prd_included[files2_list[1]]))
-
+            print(prd_used)
             # Load and extract
             af = load_data()
             files_dict = extract_class_scores(af)
@@ -133,9 +133,9 @@ if __name__ == "__main__":
 
             # Group definitions
             groups = {
-                "AlphaFold-binding": "A", "CNN_C1u": "A", "CNN_C23u": "A", "CNN_DBs": "A", "DeepDISObind-protein": "A",
+                "AlphaFold-binding": "A", "CNN_C1u": "A", "CNN_C23u": "A", "DeepDISObind-protein": "A",
                 "DeepDRPBind-protein": "A", "DisoRDPbind-protein": "A", "DRPBind-protein": "A",
-                "fMoRFpred": "B", "MoRFchibi": "B", "OPAL": "B", "CNN_TR08u": "B",
+                "fMoRFpred": "B", "MoRFchibi": "B", "OPAL": "B", "CNN_TR08u": "B", "CNN_DBs": "B",
                 "MoRFchibi-light": "C", "MoRFchibi-web": "C", "ANCHOR-2": " ",
             }
 
