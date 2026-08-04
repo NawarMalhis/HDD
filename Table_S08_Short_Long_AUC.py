@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Table 3 — AUC values for short (<=70 AA) and long (>70 AA) binding sites
+Supplementary Table S08 — AUC values for short (<=70 AA) and long (>70 AA) binding sites
 across CAID1uh, CAID23uh, and DBsh (generated separately for each length category).
 
 Author: Nawar Malhis
